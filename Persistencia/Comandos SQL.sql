@@ -1,30 +1,24 @@
-USE backendaluno0pfsii;
-
-CREATE TABLE cliente (
+CREATE TABLE hospede (
     codigo INT PRIMARY KEY AUTO_INCREMENT,
     nome VARCHAR(255) NOT NULL,
+    documento VARCHAR(20) NOT NULL,
     telefone VARCHAR(15) NOT NULL,
-    endereco VARCHAR(255) NOT NULL
+    CONSTRAINT uk_hospede_documento UNIQUE (documento)
 );
 
-
--- Tabela para armazenar os pedidos
-CREATE TABLE pedido (
-    codigo INT PRIMARY KEY AUTO_INCREMENT, 
-    cliente_codigo INT,
-    total DECIMAL(10, 2) NOT NULL,
-    data_pedido TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    CONSTRAINT FK_CLIENTE FOREIGN KEY (cliente_codigo) REFERENCES cliente(codigo)
+CREATE TABLE acomodacao (
+    codigo INT PRIMARY KEY AUTO_INCREMENT,
+    tipo VARCHAR(100) NOT NULL,
+    descricao VARCHAR(255),
+    capacidade INT NOT NULL,
+    CONSTRAINT uk_acomodacao_tipo UNIQUE (tipo)
 );
 
--- Tabela para armazenar os itens do pedido
-CREATE TABLE pedido_produto (
-    pedido_codigo INT NOT NULL,
-    produto_codigo INT NOT NULL,
-    quantidade INT NOT NULL,
-    preco_unitario DECIMAL(10, 2) NOT NULL,
-    PRIMARY KEY (pedido_codigo, produto_codigo),
-    CONSTRAINT FK_PEDIDO FOREIGN KEY (pedido_codigo) REFERENCES pedido(codigo),
-    CONSTRAINT FK_PRODUTO FOREIGN KEY (produto_codigo) REFERENCES produto(prod_codigo)
+CREATE TABLE checkin (
+    codigo INT PRIMARY KEY AUTO_INCREMENT,
+    hospede_codigo INT NOT NULL,
+    acomodacao_codigo INT NOT NULL,
+    data_checkin TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT fk_hospede FOREIGN KEY (hospede_codigo) REFERENCES hospede(codigo),
+    CONSTRAINT fk_acomodacao FOREIGN KEY (acomodacao_codigo) REFERENCES acomodacao(codigo)
 );
-

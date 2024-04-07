@@ -1,37 +1,30 @@
 import express from 'express';
 import cors from 'cors';
-import rotaCategoria from './Rotas/rotaCategoria.js';
-import rotaProduto from './Rotas/rotaProduto.js';
-import rotaLogin from './Rotas/rotaLogin.js';
-import rotaPedido from './Rotas/rotaPedido.js';
-import dotenv from 'dotenv';
-import session from 'express-session';
-import { verificarAcesso } from './Seguranca/autenticacao.js';
+import rotaAcomodacao from './Rotas/rotaAcomodacao.js';
+import rotaCheckin from './Rotas/rotaCheckin.js';
+import rotaHospede from './Rotas/rotaHospede.js';
 
-const host='0.0.0.0';
-const porta='3000';
-
-dotenv.config();
-
+const host = 'localhost';
+const porta = 4000;
 
 const app = express();
 
-app.use(cors());
+// Configurações CORS mais abrangentes
+app.use(cors({
+  origin: '*', // Permitir apenas solicitações deste endereço
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE', // Permitir os métodos necessários
+  allowedHeaders: 'Content-Type,Authorization', // Permitir os cabeçalhos necessários
+  credentials: true // Permitir credenciais (cookies, por exemplo)
+}));
+
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-app.use(session({
-    secret: process.env.SEGREDO,
-    resave: false,
-    saveUninitialized: true,
-    maxAge: 1000 * 60 * 6
-}))
 
-app.use('/login',rotaLogin);
-//verificarAcesso passa a ser middleware = camada do meio
-app.use('/categoria',verificarAcesso,rotaCategoria);
-app.use('/produto',verificarAcesso,rotaProduto);
-app.use('/pedido',verificarAcesso,rotaPedido);
+// Rotas do seu aplicativo
+app.use('/hospede', rotaHospede);
+app.use('/acomodacao', rotaAcomodacao);
+app.use('/checkin', rotaCheckin);
 
-app.listen(porta, host, ()=>{
+app.listen(porta, host, () => {
     console.log(`Servidor escutando na porta ${host}:${porta}.`);
-})
+});

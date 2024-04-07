@@ -1,6 +1,6 @@
-import Produto from "../Modelo/produto.js";
+import Acomodacao from "../Modelo/acomodacao.js";
 
-export default class ProdutoCtrl {
+export default class AcomodacaoCtrl {
 
     gravar(requisicao, resposta) {
         resposta.type('application/json');
@@ -16,35 +16,35 @@ export default class ProdutoCtrl {
             
             if (descricao && precoCusto > 0 && precoVenda > 0 && dataValidade
                 && qtdEstoque >= 0 && categoria) {
-                const produto = new Produto(0, descricao, precoCusto,
+                const acomodacao = new Acomodacao(0, descricao, precoCusto,
                     precoVenda, dataValidade, qtdEstoque, categoria
                 );
                 //resolver a promise
-                produto.gravar().then(() => {
+                acomodacao.gravar().then(() => {
                     resposta.status(200).json({
                         "status": true,
-                        "codigoGerado": produto.codigo,
-                        "mensagem": "Produto incluído com sucesso!"
+                        "codigoGerado": acomodacao.codigo,
+                        "mensagem": "Acomodacao incluído com sucesso!"
                     });
                 })
                     .catch((erro) => {
                         resposta.status(500).json({
                             "status": false,
-                            "mensagem": "Erro ao registrar o produto:" + erro.message
+                            "mensagem": "Erro ao registrar o acomodacao:" + erro.message
                         });
                     });
             }
             else {
                 resposta.status(400).json({
                     "status": false,
-                    "mensagem": "Por favor, os dados do produto segundo a documentação da API!"
+                    "mensagem": "Por favor, os dados do acomodacao segundo a documentação da API!"
                 });
             }
         }
         else {
             resposta.status(400).json({
                 "status": false,
-                "mensagem": "Por favor, utilize o método POST para cadastrar um produto!"
+                "mensagem": "Por favor, utilize o método POST para cadastrar um acomodacao!"
             });
         }
     }
@@ -62,33 +62,33 @@ export default class ProdutoCtrl {
             const categoria = dados.categoria;
             if (codigo && descricao && precoCusto > 0 && precoVenda > 0 && dataValidade
                 && qtdEstoque >= 0 && categoria) {
-                const produto = new Produto(codigo, descricao, precoCusto,
+                const acomodacao = new Acomodacao(codigo, descricao, precoCusto,
                     precoVenda, dataValidade, qtdEstoque, categoria);
                 //resolver a promise
-                produto.atualizar().then(() => {
+                acomodacao.atualizar().then(() => {
                     resposta.status(200).json({
                         "status": true,
-                        "mensagem": "Produto atualizado com sucesso!"
+                        "mensagem": "Acomodacao atualizado com sucesso!"
                     });
                 })
                     .catch((erro) => {
                         resposta.status(500).json({
                             "status": false,
-                            "mensagem": "Erro ao atualizar o produto:" + erro.message
+                            "mensagem": "Erro ao atualizar o acomodacao:" + erro.message
                         });
                     });
             }
             else {
                 resposta.status(400).json({
                     "status": false,
-                    "mensagem": "Por favor, informe todos os dados do produto segundo a documentação da API!"
+                    "mensagem": "Por favor, informe todos os dados do acomodacao segundo a documentação da API!"
                 });
             }
         }
         else {
             resposta.status(400).json({
                 "status": false,
-                "mensagem": "Por favor, utilize os métodos PUT ou PATCH para atualizar um produto!"
+                "mensagem": "Por favor, utilize os métodos PUT ou PATCH para atualizar um acomodacao!"
             });
         }
     }
@@ -99,32 +99,32 @@ export default class ProdutoCtrl {
             const dados = requisicao.body;
             const codigo = dados.codigo;
             if (codigo) {
-                const produto = new Produto(codigo);
+                const acomodacao = new Acomodacao(codigo);
                 //resolver a promise
-                produto.atualizar().then(() => {
+                acomodacao.atualizar().then(() => {
                     resposta.status(200).json({
                         "status": true,
-                        "mensagem": "Produto excluído com sucesso!"
+                        "mensagem": "Acomodacao excluído com sucesso!"
                     });
                 })
                     .catch((erro) => {
                         resposta.status(500).json({
                             "status": false,
-                            "mensagem": "Erro ao excluir o produto:" + erro.message
+                            "mensagem": "Erro ao excluir o acomodacao:" + erro.message
                         });
                     });
             }
             else {
                 resposta.status(400).json({
                     "status": false,
-                    "mensagem": "Por favor, informe o código do produto!"
+                    "mensagem": "Por favor, informe o código do acomodacao!"
                 });
             }
         }
         else {
             resposta.status(400).json({
                 "status": false,
-                "mensagem": "Por favor, utilize o método DELETE para excluir um produto!"
+                "mensagem": "Por favor, utilize o método DELETE para excluir um acomodacao!"
             });
         }
     }
@@ -139,19 +139,19 @@ export default class ProdutoCtrl {
             termo = "";
         }
         if (requisicao.method === "GET") {
-            const produto = new Produto();
-            produto.consultar(termo).then((listaProdutos) => {
+            const acomodacao = new Acomodacao();
+            acomodacao.consultar(termo).then((listaAcomodacaos) => {
                 resposta.json(
                     {
                         status: true,
-                        listaProdutos
+                        listaAcomodacaos
                     });
             })
                 .catch((erro) => {
                     resposta.json(
                         {
                             status: false,
-                            mensagem: "Não foi possível obter os produtos: " + erro.message
+                            mensagem: "Não foi possível obter os acomodacaos: " + erro.message
                         }
                     );
                 });
@@ -159,7 +159,7 @@ export default class ProdutoCtrl {
         else {
             resposta.status(400).json({
                 "status": false,
-                "mensagem": "Por favor, utilize o método GET para consultar produtos!"
+                "mensagem": "Por favor, utilize o método GET para consultar acomodacaos!"
             });
         }
     }

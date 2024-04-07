@@ -1,10 +1,10 @@
 import { Router } from "express";
-import ProdutoCtrl from "../Controle/produtoCtrl.js";
+import AcomodacaoCtrl from "../Controle/acomodacaoCtrl.js";
 
-const prodCtrl = new ProdutoCtrl();
-const rotaProduto = new Router();
+const prodCtrl = new AcomodacaoCtrl();
+const rotaAcomodacao = new Router();
 
-rotaProduto
+rotaAcomodacao
 .get('/', prodCtrl.consultar)
 .get('/:termo', prodCtrl.consultar)
 .post('/', prodCtrl.gravar)
@@ -12,4 +12,4 @@ rotaProduto
 .put('/', prodCtrl.atualizar)
 .delete('/', prodCtrl.excluir);
 
-export default rotaProduto;
+export default rotaAcomodacao;
