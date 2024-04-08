@@ -5,24 +5,16 @@ export default class Hospede{
     #codigo;
     #cpf;  //# define que um atributo seja privado
     #nome;
-    #endereco;
-    #bairro;
-    #cidade;
-    #uf;
     #telefone;
-    #email;
+
 
     //método construtor que define as informações necessárias para se criar um hospede
-    constructor(codigo, cpf, nome, endereco, bairro, cidade, uf, telefone, email){
+    constructor(codigo, cpf, nome, telefone){
         this.#codigo= codigo;
         this.#cpf = cpf;
         this.#nome = nome;
-        this.#endereco = endereco;
-        this.#bairro = bairro;
-        this.#cidade = cidade;
-        this.#uf = uf;
         this.#telefone = telefone;
-        this.#email = email;
+   
         
     }
 
@@ -51,38 +43,6 @@ export default class Hospede{
             this.#nome = novoNome;
     }
 
-    get endereco() {
-        return this.#endereco;
-    }
-
-    set endereco(novoEnd){
-        this.#endereco = novoEnd;
-    }
-
-    get bairro(){
-        return this.#bairro;    
-    }
-    
-    set bairro(novoBairro){
-        this.#bairro = novoBairro;
-    }
-
-    get cidade(){
-        return this.#cidade;
-    }
-
-    set cidade(novaCidade){
-        this.#cidade = novaCidade;
-    }
-
-    get uf(){
-        return this.#uf;
-    }
-    
-    set uf(novaUf){
-        this.#uf=novaUf;
-    }
-
     get telefone(){
         return this.#telefone;
     }
@@ -91,13 +51,7 @@ export default class Hospede{
         this.#telefone = novoTel;
     }
 
-    get email(){
-        return this.#email;
-    }
 
-    set email(novoEmail){
-        this.#email = novoEmail;
-    }
     
     //override ou sobrescrita do método toJSON
     toJSON(){
@@ -105,12 +59,7 @@ export default class Hospede{
             "codigo"   : this.#codigo,
             "cpf"      : this.#cpf,
             "nome"     : this.#nome,
-            "endereco" : this.#endereco,
-            "bairro"   : this.#bairro,
-            "cidade"   : this.#cidade,
-            "uf"       : this.#uf,
-            "telefone" : this.#telefone,
-            "email"    : this.#email
+            "telefone" : this.#telefone
         }
     }
 
@@ -135,9 +84,5 @@ export default class Hospede{
         return hospedes;
     }
 
-    async consultarCPF(cpf){
-        const hospedeBD = new HospedeDAO();
-        const hospedes = await hospedeBD.consultarCPF(cpf);
-        return hospedes;
-    }
+ 
 }

@@ -10,6 +10,6 @@ rotaHospede.post('/', hospedeCTRL.gravar)
 .put('/',hospedeCTRL.atualizar)
 .delete('/',hospedeCTRL.excluir)
 .get('/', hospedeCTRL.consultar)
-.get('/:cpf', hospedeCTRL.consultarPeloCPF);
+.get('/:termo', hospedeCTRL.consultar);
 
 export default rotaHospede;

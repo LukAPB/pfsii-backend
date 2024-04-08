@@ -9,7 +9,7 @@ export default async function conectar() {
             host: 'localhost',
             port: 3306,
             user: 'root',
-            database: 'backend4',
+            database: 'atividade4',
             waitForConnections: true,
             connectionLimit: 10,
             maxIdle: 10, // max idle connections, the default value is the same as `connectionLimit`

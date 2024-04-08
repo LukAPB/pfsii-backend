@@ -38,36 +38,21 @@ export default class CheckinDao {
 
     async consultar(termoBusca) {
         const listaCheckins = [];
-        if (!isNaN(termoBusca)) { //assegurando que seja um código de checkin do tipo inteiro
+        if (isNaN(termoBusca)) { //assegurando que seja um código de checkin do tipo inteiro
             const conexao = await conectar();
-            const sql = `SELECT p.codigo, p.hospede_codigo, p.data_checkin, p.total,
-                        c.nome, c.endereco, c.telefone,
-                        prod.prod_descricao, prod.prod_precoCusto, prod.prod_precoVenda, prod.prod_dataValidade, prod.prod_qtdEstoque,
-                        cat.cat_codigo, cat.cat_descricao,
-                        i.acomodacao_codigo, i.quantidade, i.preco_unitario, i.quantidade * i.preco_unitario as subtotal
-                        FROM checkin as p
-                        INNER JOIN hospede as c ON p.hospede_codigo = c.codigo
-                        INNER JOIN checkin_acomodacao as i ON i.checkin_codigo = p.codigo
-                        INNER JOIN acomodacao as prod ON prod.prod_codigo = i.acomodacao_codigo
-                        INNER JOIN categoria as cat ON prod.cat_codigo = cat.cat_codigo
-                        WHERE p.codigo = ?`;
-            const [registros, campos] = await conexao.execute(sql, [termoBusca]);
-
-            if (registros.length > 0) {
-
-                // a partir dos registros precisaremos restaurar os objetos
-                const hospede = new Hospede(registros[0].hospede_codigo, registros[0].nome, registros[0].telefone, registros[0].endereco);
-                let listaItensCheckin = [];
-                for (const registro of registros) {
-                    const categoria = new Categoria(registro.cat_codigo, registro.cat_descricao);
-                    const acomodacao = new Acomodacao(registro.acomodacao_codigo, registro.prod_descricao, registro.prod_precoCusto, registro.prod_precoVenda, registro.prod_dataValidade, registro.prod_qtdEstoque, categoria);
-
-
-                }
-                const checkin = new Checkin(registros[0].codigo, hospede, registros[0].data_checkin, registros[0].total, listaItensCheckin);
+            const sql = `select * from checkin`;
+            const registros = await conexao.execute(sql);
+            const dadosHospede = [];
+            for (const registro of registros[0]) {
+                const hospede = new Hospede(registro.hospede_codigo);
+                hospede.consultar(registro.hospede_codigo  ).then((dadosHospede) => {
+                    console.log("Dados Hospede", dadosHospede)
+                 dadosHospede = dadosHospede[0];
+                });
+                const acomodacao = new Acomodacao(registro.acomodacao_codigo);
+                const checkin = new Checkin(registro.codigo, dadosHospede, registro.data_checkin, registro.hosp_qtd, acomodacao);
                 listaCheckins.push(checkin);
             }
-
         }
 
         return listaCheckins;

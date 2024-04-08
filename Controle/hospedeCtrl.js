@@ -149,9 +149,13 @@ export default class HospedeCTRL{
         
         if(requisicao.method === "GET"){
             const hospede = new Hospede();
-            //método assíncrono que recupera os hospedes do banco dados
-            hospede.consultar('').then((hospedes)=>{
-                    resposta.status(200).json(hospedes);
+            let termo = requisicao.params.termo;
+            hospede.consultar(parseInt(termo)).then((listaHospedes)=>{
+                resposta.json({
+                    status:true,
+                    listaHospedes
+                
+                })
             }).catch((erro) => {
                 resposta.status(500).json({
                     status:false,

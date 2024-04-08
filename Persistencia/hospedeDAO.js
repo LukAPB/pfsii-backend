@@ -44,17 +44,29 @@ export default class HospedeDAO{
     }
 
     async consultar(termo){
-        const conexao = await conectar();
-        const sql = "SELECT * FROM hospede WHERE nome LIKE ?";
-        const valores = ['%' + termo + '%']
-        const [rows] = await conexao.query(sql, valores);
         const listaHospedes = [];
+        if(termo != null && termo != undefined && termo != "" && !isNaN(termo)){
+            const conexao = await conectar();
+            const sql = "SELECT * FROM hospede WHERE codigo = ?";
+            const valores = [termo];
+            const [rows] = await conexao.query(sql,valores);
+           
+            for(const row of rows){
+                const hospede = new Hospede(row['codigo'],row['documento'],row['nome'],row['telefone']);
+                listaHospedes.push(hospede);
+            }
+
+        }
+        else{
+        const conexao = await conectar();
+        const sql = "SELECT * FROM hospede";
+        const [rows] = await conexao.query(sql);
+       
         for(const row of rows){
-            const hospede = new Hospede(row['codigo'],row['cpf'],row['nome'],
-            row['endereco'],row['bairro'],row['cidade'],row['estado'], 
-            row['telefone'], row['email']);
+            const hospede = new Hospede(row['codigo'],row['documento'],row['nome'],row['telefone']);
             listaHospedes.push(hospede);
         }
+    }
         return listaHospedes;
     }
 

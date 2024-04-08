@@ -54,7 +54,7 @@ export default class CheckinCtrl {
             // Tentar obter o código do check-in a partir dos parâmetros da URL
             let codigoCheckin = requisicao.params.codigoCheckin;
 
-            if (!isNaN(codigoCheckin)) {
+            if (isNaN(codigoCheckin)) {
                 const checkin = new Checkin(0);
                 checkin.consultar(codigoCheckin).then((dadosCheckin) => {
                     resposta.status(200).json({
